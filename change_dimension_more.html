@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>javascript實現的平方米、畝、公頃單位換算小程式</title>
+</head>
+<body>
+<select onchange="selectChange(this)" id="sel">
+<option value="公頃">公頃</option>
+<option value="畝">畝</option>
+<option value="平方米">平方米</option>
+</select>
+這個input的值可能是3公頃、3畝、3平方米
+<input type="text" value="3" id="input0"/>
+<script type="text/javascript">
+var a = parseInt('0'); /////這裡改為你動態接受到的值，0代表單位為平方米，1為畝，2為公頃
+var sel = document.getElementById('sel');
+sel.selectedIndex = 2 - a; /////設定單位下拉
+var lastUnit = document.getElementById('sel').value; //記錄當前單位
+var input = document.getElementById("input0");
+//10000平米 = 15畝 = 1公頃
+var fRate = {//換算率
+公頃: { 畝: 15, 平方米: 10000 },
+畝: { 平方米: 10000 / 15, 公頃: 1 / 15 },
+平方米: { 畝: 15 / 10000, 公頃: 1 / 10000}
+};
+function selectChange(obj) {//單位改變，執行換算
+var v = parseFloat(input.value);//得到原來的值
+//執行換算，注意fRate的取值，得到上一次的單位節點，再取當前單位的換算率
+var rst = (v * fRate[lastUnit][sel.value]).toFixed(4);//保留4位小數
+input.value = rst;
+lastUnit = sel.value;//更新當前單位變數
+}
+</script>
+</body>
+</html>
